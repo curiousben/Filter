@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    environment {
+      microservicePath = './microservices/Filter/modules/base/'
+      version = '1.0'
+    }
+
+    stages {
+        stage('Pull Git branch for the Filter') {
+            steps {
+                deleteDir()
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    userRemoteConfigs: [[url: 'https://github.com/curiousben/home-infrastructure.git']]
+                ])
+            }
+        }
+        stage('Install and Test Filter') {
+            agent {
+                docker 'node:8.12.0-jessie'
+            }
+            environment {
+                CI = 'true'
+            }
+            stages {
+                stage('Install') {
+                    steps {
+                        dir(microservicePath) {
+                            sh 'npm install --only=dev'
+                        }
+                    }
+                }
+                stage("Test") {
+                    steps {
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Build Filter Microservice') {
+            steps {
+                dir(microservicePath) {
+                    sh './buildCoreJS.sh ${version}'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            agent {
+                dockerfile {
+                  filename 'Dockerfile'
+                  dir './docker/1.0'
+                  additionalBuildArgs '-t curiousben/filter:v2.0'
+                }
+            }
+            steps {
+                sh "echo Done"
+            }
+        }
+    }
+}
