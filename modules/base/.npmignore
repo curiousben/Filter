@@ -1,0 +1,10 @@
+# Scripts
+scripts/
+# Dockerfiles
+docker/
+# Jenkinsfile
+Jenkinsfile
+# Testsuite
+test
+# ESlint configurations
+.eslint*

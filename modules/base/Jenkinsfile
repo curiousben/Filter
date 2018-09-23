@@ -6,46 +6,29 @@ pipeline {
     }
 
     stages {
-        stage('Pull Git branch for the Filter') {
-            steps {
-                deleteDir()
-                checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/master']],
-                    doGenerateSubmoduleConfigurations: false,
-                    userRemoteConfigs: [[url: 'https://github.com/curiousben/home-infrastructure.git']]
-                ])
-            }
-        }
-        stage('Install and Test Filter') {
+        stage('Install, Test, and Build Filter') {
             agent {
                 docker 'node:8.12.0-jessie'
             }
             environment {
                 CI = 'true'
             }
-            stages {
-                stage('Install') {
-                    steps {
-                        dir(microservicePath) {
-                            sh 'npm install --only=dev'
-                        }
-                    }
-                }
-                stage("Test") {
-                    steps {
-                        sh 'npm test'
-                    }
+            steps {
+                deleteDir()
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[url: 'https://github.com/curiousben/Filter-Microservice.git']]
+                ])
+                dir(microservicePath) {
+                    sh 'npm install --only=dev'
+                    sh 'npm test'
+                    sh 'npm pack'
                 }
             }
         }
 
-        stage('Build Filter Microservice') {
-            steps {
-                dir(microservicePath) {
-                    sh './buildCoreJS.sh ${version}'
-                }
-            }
-        }
         stage('Build Docker Image') {
             agent {
                 dockerfile {
@@ -55,7 +38,7 @@ pipeline {
                 }
             }
             steps {
-                sh "echo Done"
+                sh 'Successfully built the image'
             }
         }
     }

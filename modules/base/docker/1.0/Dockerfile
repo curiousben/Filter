@@ -1,3 +1,2 @@
 FROM alpine:latest
-ARG HELLOWORLD=HELLOWORLD
-RUN echo "${HELLOWORLD}"
+COPY ./Filter-2.0.0.tgz /
