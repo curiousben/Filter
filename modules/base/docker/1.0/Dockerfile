@@ -13,7 +13,7 @@ RUN apk update --no-cache
 
 #----INFO:Coping local tarball of RedisMQ client
 ARG NPM_PACKAGE
-ADD ./${NPM_PACKAGE} /tmp
+ADD .${PACKAGE_PATH}/${NPM_PACKAGE} /tmp
 #----INFO:Installing the npm package for production globally
 RUN npm install /tmp/${NPM_PACKAGE} --production --global \
 
