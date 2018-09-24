@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-      microservicePath = './microservices/Filter/modules/base/'
+      microservicePath = './modules/base/'
       version = '1.0'
     }
 
