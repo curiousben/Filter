@@ -1,5 +1,5 @@
 {
-  "name": "filter_microservice",
+  "name": "filter",
   "version": "2.0.0",
   "repository": "github:curiousben/home-infrastructure/microservices/Filter/base/",
   "description": "This microservice filters out messages that it encounters based on values that are received from a certain set of keys",
