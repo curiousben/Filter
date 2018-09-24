@@ -15,7 +15,7 @@ RUN apk update --no-cache
 ARG NPM_PACKAGE
 ADD ./${NPM_PACKAGE} /tmp
 #----INFO:Installing the npm package for production globally
-RUN npm install /tmp/${NPM_PACKAGE} --production --global
+RUN npm install /tmp/${NPM_PACKAGE} --production --global \
 
 #----INFO:INFO: Linking the RedisMQ library so any program can use it
   && npm link filter \

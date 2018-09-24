@@ -2,8 +2,9 @@
 pipeline {
     agent any
     environment {
-      microservicePath = './modules/base/'
-      version = '1.0'
+      LIBRARY_PATH = './modules/base/'
+      MICROSERVICE = 'filter'
+      VERSION = '2.0.0'
     }
 
     stages {
@@ -22,7 +23,7 @@ pipeline {
                     submoduleCfg: [],
                     userRemoteConfigs: [[url: 'https://github.com/curiousben/Filter-Microservice.git']]
                 ])
-                dir(microservicePath) {
+                dir(LIBRARY_PATH) {
                     sh 'npm install --only=dev'
                     sh 'npm test'
                     sh 'npm pack'
@@ -35,7 +36,7 @@ pipeline {
                 dockerfile {
                   filename 'Dockerfile'
                   dir './docker/1.0'
-                  additionalBuildArgs '-t curiousben/filter:v2.0'
+                  additionalBuildArgs '--build-args NPM_PACKAGE_VERSION=${env.VERSION} --build-args NPM_PACKAGE=${env.MICROSERVICE}-${env.VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
                 }
             }
             steps {
