@@ -1,7 +1,7 @@
 # Scripts
 scripts/
-# Dockerfiles
-docker/
+# Docker build files
+Dockerfile
 # Jenkinsfile
 Jenkinsfile
 # Testsuite

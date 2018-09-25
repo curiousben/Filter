@@ -36,7 +36,7 @@ pipeline {
                 dockerfile {
                   filename 'Dockerfile'
                   dir './modules/base/docker/1.0'
-                  additionalBuildArgs '--build-arg NPM_PACKAGE_VERSION=${VERSION} --build-arg PACKAGE_PATH=${LIBRARY_PATH} --build-arg NPM_PACKAGE=${MICROSERVICE}-${VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
+                  additionalBuildArgs '--build-arg NPM_PACKAGE_VERSION=${VERSION} --build-arg NPM_PACKAGE=${MICROSERVICE}-${VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
                 }
             }
             steps {
