@@ -35,12 +35,12 @@ pipeline {
             agent {
                 dockerfile {
                   filename 'Dockerfile'
-                  dir './modules/base/docker/1.0'
+                  dir 'modules/base'
                   additionalBuildArgs '--build-arg NPM_PACKAGE_VERSION=${VERSION} --build-arg NPM_PACKAGE=${MICROSERVICE}-${VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
                 }
             }
             steps {
-                sh 'Successfully built the image'
+                sh 'echo Successfully built the image'
             }
         }
     }
