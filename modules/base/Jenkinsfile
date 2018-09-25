@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-      LIBRARY_PATH = './modules/base/'
+      LIBRARY_PATH = 'modules/base'
       MICROSERVICE = 'filter'
       VERSION = '2.0.0'
     }
@@ -35,8 +35,8 @@ pipeline {
             agent {
                 dockerfile {
                   filename 'Dockerfile'
-                  dir './docker/1.0'
-                  additionalBuildArgs '--build-args NPM_PACKAGE_VERSION=${env.VERSION} --build-args NPM_PACKAGE=${env.MICROSERVICE}-${env.VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
+                  dir './modules/base/docker/1.0'
+                  additionalBuildArgs '--build-arg NPM_PACKAGE_VERSION=${VERSION} --build-arg PACKAGE_PATH=${LIBRARY_PATH} --build-arg NPM_PACKAGE=${MICROSERVICE}-${VERSION}.tgz -t curiousben/${MICROSERVICE}:${VERSION}'
                 }
             }
             steps {

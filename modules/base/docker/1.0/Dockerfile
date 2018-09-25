@@ -4,18 +4,24 @@
 ####################################
 
 FROM curiousben/redismq-nodejs-amd:latest
+
+#----INFO: Load the environmental variables
+ARG NPM_PACKAGE
+ARG NPM_PACKAGE_VERSION
+ARG PACKAGE_PATH
+
 #----INFO: Labeling the image
 LABEL version=${NPM_PACKAGE_VERSION} \
       maintainer="benjamindsmith3@gmail.com"
 
-#----INFO:Update package indices with the udate to date source and installing basic utilities
-RUN apk update --no-cache 
-
 #----INFO:Coping local tarball of RedisMQ client
-ARG NPM_PACKAGE
-ADD .${PACKAGE_PATH}/${NPM_PACKAGE} /tmp
+COPY ${PACKAGE_PATH}/${NPM_PACKAGE} /tmp/
+
+#----INFO:Update package indices with the udate to date source and installing basic utilities
+RUN apk update --no-cache \
+
 #----INFO:Installing the npm package for production globally
-RUN npm install /tmp/${NPM_PACKAGE} --production --global \
+  && npm install /tmp/${NPM_PACKAGE} --production --global \
 
 #----INFO:INFO: Linking the RedisMQ library so any program can use it
   && npm link filter \
