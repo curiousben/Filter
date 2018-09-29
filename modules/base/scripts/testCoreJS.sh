@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -eo pipefail
 
 ./node_modules/.bin/mocha --recursive ./test
